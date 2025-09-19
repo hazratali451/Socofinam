@@ -140,9 +140,9 @@ const penIcon = (
 
 export default function Articles() {
     return (
-        <div className='bg-fadedWhite min-h-screen px-4'>
+        <div className='bg-fadedWhite min-h-screen'>
             <Header />
-            <main className='sm:pt-[52px] pt-8 pb-[68px]'>
+            <main className='sm:pt-[52px] pt-8 pb-[68px]  px-4'>
                 <section className='max-w-[1692px] mx-auto grid xl:grid-cols-4 lg:grid-cols-3 md:grid-cols-2 sm:gap-5 gap-4 '>
                     {data.map((cur, i) => (
                         <div
