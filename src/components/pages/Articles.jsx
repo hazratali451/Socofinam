@@ -180,66 +180,76 @@ export default function Articles() {
             <Header setArray={setSearchData} array={data} />
             <main className='sm:pt-[52px] pt-8 pb-[68px]  px-4'>
                 <section className='max-w-[1692px] mx-auto grid xl:grid-cols-4 lg:grid-cols-3 md:grid-cols-2 sm:gap-5 gap-4 '>
-                    {visible.map((cur, i) => (
-                        <div
-                            className='bg-white p-2 rounded-[40px] box-shadow flex flex-col'
-                            key={i}
-                        >
-                            <img
-                                src={`/article/${i + 1}.jpg`}
-                                alt={cur.heading}
-                                className='rounded-[34px] w-full'
-                            />
+                    {visible.length === 0 ? (
+                        <div className='lg:text-2xl text-xl text-black1/70 text-center xl:col-span-4 lg:col-span-3 md:col-span-2'>
+                            No Item Found
+                        </div>
+                    ) : (
+                        visible.map((cur, i) => (
+                            <div
+                                className='bg-white p-2 rounded-[40px] box-shadow flex flex-col'
+                                key={i}
+                            >
+                                <img
+                                    src={`/article/${i + 1}.jpg`}
+                                    alt={cur.heading}
+                                    className='rounded-[34px] w-full'
+                                />
 
-                            <div className='p-2 flex flex-col flex-1'>
-                                {cur.isEditing ? (
-                                    <input
-                                        type='text'
-                                        defaultValue={cur.heading} // start with current heading
-                                        onBlur={(e) => {
-                                            updateHeading(
-                                                cur.id,
-                                                e.target.value
-                                            ); // save only on blur
-                                            toggleEdit(cur.id);
-                                        }}
-                                        className='outline-2 outline-skyblue text-[20px] font-medium mt-4'
-                                        autoFocus
-                                    />
-                                ) : (
-                                    <h2 className='mt-4 text-[20px] font-medium leading-normal'>
-                                        {cur.heading}
-                                    </h2>
-                                )}
+                                <div className='p-2 flex flex-col flex-1'>
+                                    {cur.isEditing ? (
+                                        <input
+                                            type='text'
+                                            defaultValue={cur.heading} // start with current heading
+                                            onBlur={(e) => {
+                                                updateHeading(
+                                                    cur.id,
+                                                    e.target.value
+                                                ); // save only on blur
+                                                toggleEdit(cur.id);
+                                            }}
+                                            className='outline-2 outline-skyblue text-[20px] font-medium mt-4'
+                                            autoFocus
+                                        />
+                                    ) : (
+                                        <h2 className='mt-4 text-[20px] font-medium leading-normal'>
+                                            {cur.heading}
+                                        </h2>
+                                    )}
 
-                                <p className='mt-3 mb-5 text-black1/55 text-sm leading-[20px]'>
-                                    {cur.txt}
-                                </p>
+                                    <p className='mt-3 mb-5 text-black1/55 text-sm leading-[20px]'>
+                                        {cur.txt}
+                                    </p>
 
-                                <div className='mt-auto'>
-                                    <div className='flex items-stretch gap-2 '>
-                                        <div
-                                            className='p-3.5 flex items-center justify-center bg-fadedWhite rounded-full cursor-pointer '
-                                            onClick={() => handleDelete(cur.id)}
-                                        >
-                                            {binIcon}
+                                    <div className='mt-auto'>
+                                        <div className='flex items-stretch gap-2 '>
+                                            <div
+                                                className='p-3.5 flex items-center justify-center bg-fadedWhite rounded-full cursor-pointer '
+                                                onClick={() =>
+                                                    handleDelete(cur.id)
+                                                }
+                                            >
+                                                {binIcon}
+                                            </div>
+
+                                            <div
+                                                className='p-3.5 flex items-center justify-center bg-fadedWhite rounded-full cursor-pointer '
+                                                onClick={() =>
+                                                    toggleEdit(cur.id)
+                                                }
+                                            >
+                                                {penIcon}
+                                            </div>
+
+                                            <Button className='whitespace-nowrap'>
+                                                View More
+                                            </Button>
                                         </div>
-
-                                        <div
-                                            className='p-3.5 flex items-center justify-center bg-fadedWhite rounded-full cursor-pointer '
-                                            onClick={() => toggleEdit(cur.id)}
-                                        >
-                                            {penIcon}
-                                        </div>
-
-                                        <Button className='whitespace-nowrap'>
-                                            View More
-                                        </Button>
                                     </div>
                                 </div>
                             </div>
-                        </div>
-                    ))}
+                        ))
+                    )}
                 </section>
             </main>
         </div>
