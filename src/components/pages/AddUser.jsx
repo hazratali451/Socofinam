@@ -42,7 +42,7 @@ const fields = [
     {
         id: "mobile",
         label: "Mobile Number",
-        type: "tel",
+        type: "number",
         placeholder: "Enter mobile number",
     },
 ];
@@ -94,7 +94,7 @@ export default function AddUser() {
                     </div>
 
                     <div className='mt-8 flex flex-col md:flex-row sm:gap-10 gap-6 justify-stretch'>
-                        <div className='grid xl:grid-cols-3 lg:grid-cols-2 gap-x-4 sm:gap-y-7 gap-y-6 flex-1'>
+                        <div className='grid xl:grid-cols-3 grid-cols-2 sm:gap-x-4 gap-x-2 sm:gap-y-7 gap-y-6 flex-1'>
                             {fields.map((f) => (
                                 <InputField
                                     key={f.id}
@@ -138,7 +138,13 @@ function InputField({
     ...props
 }) {
     return (
-        <div className=''>
+        <div
+            className={`${
+                id === "block" || id === "city"
+                    ? ""
+                    : "md:col-span-1 col-span-2"
+            }`}
+        >
             <label
                 className='xl:text-lg leading-normal text-black1/65'
                 htmlFor={id}

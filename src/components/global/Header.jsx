@@ -1,9 +1,56 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Link, useLocation } from "react-router-dom";
 
-export default function Header() {
-    const { pathname } = useLocation();
+/**
+ * Search for `query` inside an array of items (objects/strings/JSX etc.)
+ * - Case-insensitive
+ * - Works with nested objects, arrays and React elements (by reading props.children)
+ *
+ * @param {string} query
+ * @param {Array} list
+ * @returns {Array} filtered items that contain the query somewhere
+ */
+function searchInArray(query, list) {
+    if (!query) return false;
+    const q = String(query).toLowerCase();
 
+    // single exported function; helper is nested so we still expose just one function
+    const serialize = (value) => {
+        if (value == null) return "";
+        const t = typeof value;
+
+        if (t === "string" || t === "number" || t === "boolean") {
+            return String(value);
+        }
+
+        if (Array.isArray(value)) {
+            return value.map(serialize).join(" ");
+        }
+
+        // React element: inspect props.children
+        if (t === "object") {
+            // Common shape of a React element: it's an object with `props`
+            if (value.props !== undefined) {
+                return serialize(value.props.children);
+            }
+            // otherwise serialize each property value
+            return Object.values(value).map(serialize).join(" ");
+        }
+
+        return "";
+    };
+
+    if (!Array.isArray(list)) return [];
+
+    return list.filter((item) => {
+        const hay = serialize(item).toLowerCase();
+        return hay.includes(q);
+    });
+}
+
+export default function Header({ setArray, array }) {
+    const { pathname } = useLocation();
+    const [searchInp, setSearchInp] = useState("");
     // helpers to detect active tab
     const isArticlesActive = /(^|\/)(articles|create-article)(\/|$)/.test(
         pathname
@@ -14,6 +61,12 @@ export default function Header() {
     const isUsersActive = /(^|\/)(users|add-user)(\/|$)/.test(pathname);
 
     const isJustUser = /(^|\/)(users)(\/|$)/.test(pathname);
+
+    useEffect(() => {
+
+        (isJustArticle || isJustUser) && setArray(searchInArray(searchInp, array));
+        // console.log(searchInArray(searchInp, array))
+    }, [array, searchInp, setArray,isJustArticle,isJustUser]);
 
     return (
         <header className='px-4'>
@@ -106,8 +159,12 @@ export default function Header() {
                         <input
                             type='Search'
                             id='Search-id'
-                            className=' 2xl:h-[80px] h-[72px] w-full rounded-full px-6 pl-[86px] placeholder:text-black1/[0.32] text-black1 focus:outline-none border-[0.5px] border-transparent focus:border-darkblue/50 '
+                            className='cursor-pointer 2xl:h-[80px] h-[72px] w-full rounded-full px-6 pl-[86px] placeholder:text-black1/[0.32] text-black1 focus:outline-none border-[0.5px] border-transparent focus:border-darkblue/50 '
                             placeholder='Search'
+                            value={searchInp}
+                            onChange={(e) => {
+                                setSearchInp(e.target.value);
+                            }}
                         />
                     </div>
 

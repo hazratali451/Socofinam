@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import Button from "../global/Button";
 
@@ -34,7 +34,20 @@ const closeEyeSvg = (
     </svg>
 );
 
+const openEyeIcon = (
+    <svg
+        xmlns='http://www.w3.org/2000/svg'
+        viewBox='0 0 512 512'
+        width={22}
+        height={22}
+        fill='currentColor'
+    >
+        <path d='M468.164 251.629c-14.616-39.158-43.876-71.463-84.618-93.421-36.933-19.904-81.037-30.426-127.545-30.426H256c-46.505 0-90.613 10.522-127.545 30.426-40.742 21.958-70.003 54.262-84.619 93.421a12.502 12.502 0 0 0 0 8.742c14.616 39.159 43.877 71.463 84.619 93.421 36.934 19.904 81.038 30.426 127.546 30.426s90.612-10.521 127.545-30.426c40.742-21.958 70.002-54.263 84.618-93.421a12.502 12.502 0 0 0 0-8.742zM256.001 359.218c-88.234 0-161.012-40.353-187.023-103.218 26.012-62.865 98.789-103.218 187.023-103.218S417.011 193.136 443.022 256c-26.011 62.864-98.787 103.218-187.021 103.218zM256 172.182c-46.218 0-83.818 37.601-83.818 83.818s37.601 83.819 83.818 83.819 83.819-37.602 83.819-83.819-37.601-83.818-83.819-83.818zm0 142.637c-32.433 0-58.818-26.386-58.818-58.819s26.386-58.818 58.818-58.818c32.434 0 58.819 26.386 58.819 58.818 0 32.434-26.385 58.819-58.819 58.819zM243.5 80.363V31c0-6.903 5.597-12.5 12.5-12.5s12.5 5.597 12.5 12.5v49.363c0 6.903-5.597 12.5-12.5 12.5s-12.5-5.596-12.5-12.5zM78.369 77.342c-3.452-5.979-1.403-13.623 4.575-17.075 5.977-3.455 13.622-1.404 17.075 4.575l24.682 42.749c3.452 5.979 1.403 13.623-4.575 17.075a12.494 12.494 0 0 1-17.075-4.575zm308.93 30.25 24.682-42.75c3.451-5.979 11.095-8.027 17.075-4.575 5.979 3.451 8.027 11.097 4.575 17.075l-24.682 42.75a12.495 12.495 0 0 1-17.075 4.575c-5.978-3.452-8.027-11.097-4.575-17.075zm46.332 327.066c3.452 5.979 1.403 13.623-4.575 17.075a12.494 12.494 0 0 1-17.075-4.575l-24.682-42.749c-3.452-5.979-1.403-13.623 4.575-17.075 5.978-3.455 13.623-1.404 17.075 4.575zm-308.93-30.249-24.682 42.749a12.495 12.495 0 0 1-17.075 4.575c-5.979-3.452-8.027-11.097-4.575-17.075l24.682-42.749c3.451-5.979 11.095-8.027 17.075-4.575 5.978 3.452 8.027 11.097 4.575 17.075zM268.5 431.638V481c0 6.903-5.597 12.5-12.5 12.5s-12.5-5.597-12.5-12.5v-49.362c0-6.903 5.597-12.5 12.5-12.5s12.5 5.596 12.5 12.5z' />
+    </svg>
+);
 export default function Login() {
+    const [showPass, setShowPass] = useState(false);
+    const [pass, setPass] = useState("");
     return (
         <div className='flex flex-col min-h-screen '>
             <main className='relative overflow-hidden text-black1 min-h-[980px] 2xl:min-h-[1080px] py-10 flex items-center px-4 bg-fadedWhite flex-1'>
@@ -81,14 +94,21 @@ export default function Login() {
                             </label>
                             <div className='lg:mt-2.5 mt-2 relative flex items-center'>
                                 <input
-                                    type='text'
+                                    type={showPass ? "text" : "password"}
                                     id='password-id'
+                                    value={pass}
+                                    onChange={(e) => {
+                                        setPass(e.target.value);
+                                    }}
                                     className='h-[60px] w-full bg-fadedWhite rounded-full px-6 placeholder:text-black1/[0.32] text-black1 focus:outline-none border-[0.5px] border-transparent focus:border-darkblue/50'
                                     placeholder='Enter password'
                                 />
 
-                                <div className='size-5 absolute right-6'>
-                                    {closeEyeSvg}
+                                <div
+                                    className='size-5 absolute right-6 cursor-pointer'
+                                    onClick={() => setShowPass(!showPass)}
+                                >
+                                    {showPass ? openEyeIcon : closeEyeSvg}
                                 </div>
                             </div>
                         </div>
@@ -102,7 +122,7 @@ export default function Login() {
                             </Link>
                         </div>
 
-                       <Button className="lg:mt-8 mt-10">Log In</Button>
+                        <Button className='lg:mt-8 mt-10'>Log In</Button>
 
                         <p className='text-black1/55 text-base text-center mt-8'>
                             Don’t have an account?{" "}

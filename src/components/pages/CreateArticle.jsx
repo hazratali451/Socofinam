@@ -142,7 +142,7 @@ export default function CreateArticle() {
                                 <textarea
                                     type='text'
                                     id='content-id'
-                                    className=' mt-1.5 h-[280px] w-full bg-fadedWhite rounded-[30px] py-5 px-6 placeholder:text-black1/[0.32] text-black1 focus:outline-none border-[0.5px] border-transparent focus:border-darkblue/50 text-base'
+                                    className='resize-none mt-1.5 h-[280px] w-full bg-fadedWhite rounded-[30px] py-5 px-6 placeholder:text-black1/[0.32] text-black1 focus:outline-none border-[0.5px] border-transparent focus:border-darkblue/50 text-base'
                                     placeholder='Enter content'
                                 />
                             </div>

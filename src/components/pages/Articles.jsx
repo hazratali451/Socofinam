@@ -1,21 +1,24 @@
-import React from "react";
+import React, { useState } from "react";
 import Header from "../global/Header";
 import Button from "../global/Button";
 
-const data = [
+const initData = [
     {
+        id: "id1",
         heading: "Lorem Ipsum Dolor Sit Amet",
         txt: `Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed
               ut perspiciatis unde omnis iste natus error sit voluptatem
               accusantium doloremque laudantium.`,
     },
     {
+        id: "id2",
         heading: "Consectetur Adipiscing Elit Sed",
         txt: `Suspendisse potenti. Nullam vehicula, sapien sit amet fring
               illa consequat, enim dui elementum magna, at malesuada
               neque nisl eget lorem.`,
     },
     {
+        id: "id3",
         heading: "Duis Aute Irure Dolor in Reprehenderit",
         txt: (
             <>
@@ -26,12 +29,14 @@ const data = [
         ),
     },
     {
+        id: "id4",
         heading: "Ut Enim Ad Minim Veniam Quis",
         txt: `Cras eget dictum nunc, vel ultrices nunc. Sed in felis a ligula
               dignissim elementum. laoreet fermentum lectus nec
               vehicula.mauris id justo volutpat.`,
     },
     {
+        id: "id5",
         heading: "Pellentesque habitant morbi tristique",
         txt: (
             <span className='max-w-[356px] inline-block'>
@@ -42,6 +47,7 @@ const data = [
         ),
     },
     {
+        id: "id6",
         heading: "Vitae euismod mi lectus nec purus.",
         txt: (
             <span className='max-w-[362px] inline-block'>
@@ -52,6 +58,7 @@ const data = [
         ),
     },
     {
+        id: "id7",
         heading: "Feugiat libero nec elementum.",
         txt: (
             <span className='max-w-[355px] inline-block'>
@@ -139,12 +146,41 @@ const penIcon = (
 );
 
 export default function Articles() {
+    const [data, setData] = useState(initData);
+    const [searchData, setSearchData] = useState();
+
+    // toggle edit by id
+    const toggleEdit = (id) => {
+        setData((prev) =>
+            prev.map((item) =>
+                item.id === id ? { ...item, isEditing: !item.isEditing } : item
+            )
+        );
+    };
+
+    // update heading by id
+    const updateHeading = (id, newValue) => {
+        setData((prev) =>
+            prev.map((item) =>
+                item.id === id ? { ...item, heading: newValue } : item
+            )
+        );
+    };
+
+    // delete by id
+    const handleDelete = (id) => {
+        setData((prev) => prev.filter((item) => item.id !== id));
+    };
+
+    // visible list (Header writes searchData when searching)
+    const visible = searchData || data;
+
     return (
         <div className='bg-fadedWhite min-h-screen'>
-            <Header />
+            <Header setArray={setSearchData} array={data} />
             <main className='sm:pt-[52px] pt-8 pb-[68px]  px-4'>
                 <section className='max-w-[1692px] mx-auto grid xl:grid-cols-4 lg:grid-cols-3 md:grid-cols-2 sm:gap-5 gap-4 '>
-                    {data.map((cur, i) => (
+                    {visible.map((cur, i) => (
                         <div
                             className='bg-white p-2 rounded-[40px] box-shadow flex flex-col'
                             key={i}
@@ -156,9 +192,25 @@ export default function Articles() {
                             />
 
                             <div className='p-2 flex flex-col flex-1'>
-                                <h2 className='mt-4 text-[20px] font-medium leading-normal'>
-                                    {cur.heading}
-                                </h2>
+                                {cur.isEditing ? (
+                                    <input
+                                        type='text'
+                                        defaultValue={cur.heading} // start with current heading
+                                        onBlur={(e) => {
+                                            updateHeading(
+                                                cur.id,
+                                                e.target.value
+                                            ); // save only on blur
+                                            toggleEdit(cur.id);
+                                        }}
+                                        className='outline-2 outline-skyblue text-[20px] font-medium mt-4'
+                                        autoFocus
+                                    />
+                                ) : (
+                                    <h2 className='mt-4 text-[20px] font-medium leading-normal'>
+                                        {cur.heading}
+                                    </h2>
+                                )}
 
                                 <p className='mt-3 mb-5 text-black1/55 text-sm leading-[20px]'>
                                     {cur.txt}
@@ -166,11 +218,17 @@ export default function Articles() {
 
                                 <div className='mt-auto'>
                                     <div className='flex items-stretch gap-2 '>
-                                        <div className='p-3.5 flex items-center justify-center bg-fadedWhite rounded-full cursor-pointer '>
+                                        <div
+                                            className='p-3.5 flex items-center justify-center bg-fadedWhite rounded-full cursor-pointer '
+                                            onClick={() => handleDelete(cur.id)}
+                                        >
                                             {binIcon}
                                         </div>
 
-                                        <div className='p-3.5 flex items-center justify-center bg-fadedWhite rounded-full cursor-pointer '>
+                                        <div
+                                            className='p-3.5 flex items-center justify-center bg-fadedWhite rounded-full cursor-pointer '
+                                            onClick={() => toggleEdit(cur.id)}
+                                        >
                                             {penIcon}
                                         </div>
 

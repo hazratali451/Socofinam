@@ -1,42 +1,44 @@
-import React from "react";
+import React, { useState } from "react";
 import Header from "../global/Header";
+const rows = [
+    {
+        firstName: "Sofia",
+        lastName: "Müller",
+        email: "sofia.mueller@example.com",
+    },
+    {
+        firstName: "Yara",
+        lastName: "Haddad",
+        email: "yara.haddad@example.com",
+    },
+    {
+        firstName: "Viktor",
+        lastName: "Petrov",
+        email: "viktor.petrov@example.com",
+    },
+    {
+        firstName: "Kenji",
+        lastName: "Takahashi",
+        email: "kenji.takahashi@example.com",
+    },
+    {
+        firstName: "Isabella",
+        lastName: "Conti",
+        email: "isabella.conti@example.com",
+    },
+];
 
 export default function Users() {
     // dynamic columns
     const columns = ["First Name", "Last Name", "Email Address", "Delete"];
 
     // dynamic rows
-    const rows = [
-        {
-            firstName: "Sofia",
-            lastName: "Müller",
-            email: "sofia.mueller@example.com",
-        },
-        {
-            firstName: "Yara",
-            lastName: "Haddad",
-            email: "yara.haddad@example.com",
-        },
-        {
-            firstName: "Viktor",
-            lastName: "Petrov",
-            email: "viktor.petrov@example.com",
-        },
-        {
-            firstName: "Kenji",
-            lastName: "Takahashi",
-            email: "kenji.takahashi@example.com",
-        },
-        {
-            firstName: "Isabella",
-            lastName: "Conti",
-            email: "isabella.conti@example.com",
-        },
-    ];
+    const [data, setData] = useState(rows);
+    const [searchData, setSearchData] = useState();
 
     return (
         <div className='bg-fadedWhite min-h-screen'>
-            <Header />
+            <Header array={data} setArray={setSearchData} />
             <main className='sm:pt-[52px] pt-8 pb-[68px] px-4'>
                 <section className='max-w-[1692px] mx-auto p-2 bg-white box-shadow rounded-[40px] pb-[140px] lg:block hidden'>
                     <div className='overflow-hidden rounded-t-[34px] relative '>
@@ -63,7 +65,7 @@ export default function Users() {
                             </thead>
 
                             <tbody className=''>
-                                {rows.map((row, idx) => (
+                                {(searchData || data).map((row, idx) => (
                                     <tr
                                         key={idx}
                                         className='text-[20px] font-normal text-black1 leading-none border-b border-black1/[0.12] mx-2'
@@ -79,7 +81,16 @@ export default function Users() {
                                         </td>
                                         <td className='p-[20px_0px_22px_48px] 2xl:w-[265px] text-center'>
                                             {/* <-- right column resized */}
-                                            <button className='h-14 rounded-full bg-fadedWhite max-w-[165px] w-full px-8 py-5 flex items-center justify-center text-base font-semibold leading-normal text-[#FF4757] hover:bg-[#FF4757] hover:text-white transition-colors duration-300 ease-in-out'>
+                                            <button
+                                                className='h-14 rounded-full bg-fadedWhite max-w-[165px] w-full px-8 py-5 flex items-center justify-center text-base font-semibold leading-normal text-[#FF4757] hover:bg-[#FF4757] hover:text-white transition-colors duration-300 ease-in-out'
+                                                onClick={() =>
+                                                setData((prev) =>
+                                                    prev.filter(
+                                                        (item) => item !== row
+                                                    )
+                                                )
+                                            }
+                                            >
                                                 Delete
                                             </button>
                                         </td>
@@ -94,7 +105,7 @@ export default function Users() {
                 </section>
 
                 <div className='lg:hidden flex flex-col gap-4'>
-                    {rows.map((cur, i) => (
+                    {(searchData || data).map((cur, i) => (
                         <div
                             key={i}
                             className='p-2 rounded-[40px] bg-white box-shadow'
@@ -120,7 +131,14 @@ export default function Users() {
                                 </div>
                             </div>
 
-                            <button className='text-[#FF4757] text-base leading-normal font-semibold text-center w-full h-[68px] rounded-full bg-fadedWhite mt-4 hover:bg-[#FF4757] hover:text-white transition-colors duration-300 ease-in-out'>
+                            <button
+                                className='text-[#FF4757] text-base leading-normal font-semibold text-center w-full h-[68px] rounded-full bg-fadedWhite mt-4 hover:bg-[#FF4757] hover:text-white transition-colors duration-300 ease-in-out'
+                                onClick={() =>
+                                    setData((prev) =>
+                                        prev.filter((item) => item !== cur)
+                                    )
+                                }
+                            >
                                 Delete
                             </button>
                         </div>

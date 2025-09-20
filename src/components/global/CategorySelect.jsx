@@ -71,7 +71,7 @@ export default function CategorySelectCustom({
           ref={listRef}
           role="listbox"
           aria-activedescendant={selected}
-          className="absolute border border-darkblue/30 -top-4 left-0 right-0 mt-2 bg-white rounded-lg box-shadow max-h-[240px] overflow-auto z-50"
+          className="absolute border border-darkblue/30 top-full left-0 right-0 mt-2 bg-white rounded-lg box-shadow max-h-[240px] overflow-auto z-50"
           style={{
             // make sure it sits above other content; match your input width and don't overflow viewport
             maxWidth: "100%",
